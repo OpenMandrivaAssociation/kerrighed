@@ -21,7 +21,7 @@ Version:	%{krgversion}
 Release:	%release
 
 %if %mdvdis > 0
-Group:		System/Base
+Group:		System/Cluster
 %else
 Group:		Applications/System
 %endif
@@ -32,7 +32,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:	autoconf >= 2.59, automake >= 1.9, gcc, libtool, docbook-utils, hevea
 BuildRequires:  xmlto
-BuildRequires:  kernel-kerrighed-source-%{kernelkrgversion}
+BuildRequires:  kernel-kerrighed-source-krgversion = %{krgversion}
 
 %if %rhdis > 0
 BuildRequires: redhat-lsb
@@ -40,7 +40,7 @@ BuildRequires: redhat-lsb
 BuildRequires: lsb-core, docbook-dtd42-xml
 %endif
 
-Requires:	kerrighed-kmodule = %{krgversion}, kerrighed-utils = %{krgversion}, kerrighed-libkerrighed = %{krgversion}
+Requires:	kerrighed-kmodule = %{krgversion}, kerrighed-utils = %{krgversion}, %{libname} = %{krgversion}
 Source0:	kerrighed-%{krgversion}.tar.gz
 
 %description
@@ -50,11 +50,11 @@ tools and libs. The Kerrighed system is a Linux-based SSI.
 %package kernel
 Summary: The kernel module for Kerrighed kernel %{kernelkrgversion}
 %if %mdvdis > 0
-Group: System/Kernel and hardware
+Group:		System/Cluster
 %else
 Group: System Environment/Kernel
 %endif
-Requires: kerrighed-kernel-%{kernelkrgversion}, kerrighed-utils = %{krgversion}
+Requires: kernel-kerrighed-krgversion = %{krgversion}, kerrighed-utils = %{krgversion}
 Provides: kerrighed-kmodule = %{krgversion}
 
 %description kernel
@@ -64,11 +64,11 @@ Kerrighed cluster work. It works with the %{kernelkrgversion} kernel.
 %package utils
 Summary: Tools for Kerrighed cluster
 %if %mdvdis > 0
-Group: System/Base
+Group:		System/Cluster
 %else
 Group: Applications/System
 %endif
-Requires: kerrighed-libkerrighed = %{krgversion}-%{release}
+Requires: %{libname} = %{krgversion}-%{release}
 
 %description utils
 This package contains tools to make a fully fonctionnal Kerrighed
@@ -77,7 +77,7 @@ cluster, like init scripts. It contains the command krgadm.
 %package -n %{libname}
 Summary: The Kerrighed library
 %if %mdvdis > 0
-Group: System/Libraries
+Group:		System/Cluster
 %else
 Group: System Environment/Libraries
 %endif
@@ -90,7 +90,7 @@ features of the Kerrighed OS.
 %package -n %{libname}-devel
 Summary: The Kerrighed library - development files
 %if %mdvdis > 0
-Group: System/Libraries
+Group:		System/Cluster
 %else
 Group: Development/Libraries
 %endif
