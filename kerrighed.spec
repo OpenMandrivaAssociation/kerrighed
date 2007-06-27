@@ -42,6 +42,7 @@ BuildRequires: redhat-lsb
 BuildRequires: lsb-core, docbook-dtd42-xml
 %endif
 
+ExclusiveArch:	%{ix86}
 Requires:	kerrighed-kmodule = %{krgversion}-%{release}, kerrighed-utils = %{krgversion}, %{libname} = %{krgversion}
 Source0:	kerrighed-%{krgversion}.tar.gz
 
