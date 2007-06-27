@@ -7,10 +7,12 @@ Summary: The Kerrighed system (a Linux-based SSI)
 %define name kerrighed
 %define krgversion 2.1.0
 %define linuxversion 2.6.20
-%define extraversion .13-krg%{krgversion}-2%{distsuffix}
+%define linuxsubversion .13
+%define	kernelrelease 2
+%define kernelpkgrelease %mkrel %kernelrelease
+%define extraversion %{linuxsubversion}-krg%{krgversion}-%{kernelrelease}%{distsuffix}
 %define kernelkrgversion %{linuxversion}%{extraversion}
-%define kernelname linux-%{kernelkrgversion}
-%define kernelsrcdir %{_usrsrc}/%{kernelname}
+%define kernelsrcdir %{_usrsrc}/kernel-kerrighed-%{kernelkrgversion}
 %define release %mkrel 1
 %define libname %mklibname %name
 
@@ -32,7 +34,7 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:	autoconf >= 2.59, automake >= 1.9, gcc, libtool, docbook-utils, hevea
 BuildRequires:  xmlto
-BuildRequires:  kernel-kerrighed-source-krgversion = %{krgversion}
+BuildRequires:  kernel-kerrighed-source-krgversion = %{krgversion}-%{kernelpkgrelease}
 
 %if %rhdis > 0
 BuildRequires: redhat-lsb
@@ -40,7 +42,7 @@ BuildRequires: redhat-lsb
 BuildRequires: lsb-core, docbook-dtd42-xml
 %endif
 
-Requires:	kerrighed-kmodule = %{krgversion}, kerrighed-utils = %{krgversion}, %{libname} = %{krgversion}
+Requires:	kerrighed-kmodule = %{krgversion}-%{release}, kerrighed-utils = %{krgversion}, %{libname} = %{krgversion}
 Source0:	kerrighed-%{krgversion}.tar.gz
 
 %description
@@ -54,7 +56,7 @@ Group:		System/Cluster
 %else
 Group: System Environment/Kernel
 %endif
-Requires: kernel-kerrighed-krgversion = %{krgversion}, kerrighed-utils = %{krgversion}
+Requires: kernel-kerrighed-krgversion = %{krgversion}-%{kernelpkgrelease}, kerrighed-utils = %{krgversion}
 Provides: kerrighed-kmodule = %{krgversion}
 
 %description kernel
@@ -103,12 +105,12 @@ libkrgthread) development files and static libraries.
 
 %prep
 %setup -q
-%{__cp} -a %{kernelsrcdir} %{kernelname}
-%{__sed} -i 's/EXTRAVERSION = .*/EXTRAVERSION = %{extraversion}/' %{kernelname}/Makefile
+%{__cp} -a %{kernelsrcdir} linux-%{kernelkrgversion}
+%{__sed} -i 's/EXTRAVERSION = .*/EXTRAVERSION = %{extraversion}/' linux-%{kernelkrgversion}/Makefile
 
 %build
 %configure \
-	--with-kernel=`pwd`/%{kernelname} \
+	--with-kernel=`pwd`/linux-%{kernelkrgversion} \
 	--enable-libkerrighed \
 	--enable-tools \
 	--enable-module \
