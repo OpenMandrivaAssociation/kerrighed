@@ -1,6 +1,4 @@
-%{?!susedis: %define susedis %(cat /etc/*release | sort -u | grep -i suse | wc -l)}
-%{?!mdvdis: %define mdvdis %(cat /etc/*release | sort -u | grep -i mandr | wc -l)}
-%{?!rhdis: %define rhdis %(cat /etc/*release | sort -u | grep -Ei "fedora|centos|redhat|whitebox" | wc -l)}
+%define mdvsys 1
 
 Summary: The Kerrighed system (a Linux-based SSI)
 
