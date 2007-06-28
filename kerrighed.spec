@@ -119,16 +119,22 @@ libkrgthread) development files and static libraries.
 %make
 
 %install
-rm -rf $RPM_BUILD_ROOT
+%{__rm} -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/etc/init.d
-cp -p tools/scripts/init.d/redhat $RPM_BUILD_ROOT%{_sysconfdir}/init.d/kerrighed
+%{__mkdir} -p $RPM_BUILD_ROOT/etc/init.d
+%{__cp} -p tools/scripts/init.d/redhat $RPM_BUILD_ROOT%{_sysconfdir}/init.d/kerrighed
+%{__mkdir} -p $RPM_BUILD_ROOT/lib/modules/%{kernelkrgversion}/extra
+%{__mv} $RPM_BUILD_ROOT/lib/modules/%{kernelkrgversion}/build/kerrighed.ko \
+        $RPM_BUILD_ROOT/lib/modules/%{kernelkrgversion}/extra/kerrighed.ko
 
 %clean
 #rm -rf $RPM_BUILD_ROOT
 #rm -rf %{_builddir}/linux-%{linuxversion} %{_builddir}/%{name}-%{version}
 
 %post kernel
+/sbin/depmod %{kernelkrgversion}
+
+%postun kernel
 /sbin/depmod %{kernelkrgversion}
 
 %post -n %libname
@@ -150,7 +156,7 @@ cp -p tools/scripts/init.d/redhat $RPM_BUILD_ROOT%{_sysconfdir}/init.d/kerrighed
 %files kernel
 %defattr(-,root,root)
 %doc README ChangeLog modules/CHANGES modules/COPYRIGHT
-/lib/modules/%{kernelkrgversion}/build/kerrighed.ko
+/lib/modules/%{kernelkrgversion}/extra/kerrighed.ko
 
 %files utils
 %defattr(-,root,root)
