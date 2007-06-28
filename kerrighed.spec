@@ -1,4 +1,3 @@
-%define mdvsys 1
 
 Summary: The Kerrighed system (a Linux-based SSI)
 
@@ -20,11 +19,7 @@ Name:		%name
 Version:	%{krgversion}
 Release:	%release
 
-%if %mdvdis > 0
 Group:		System/Cluster
-%else
-Group:		Applications/System
-%endif
 License:	GPL
 URL:		http://kerrighed.org
 
@@ -34,11 +29,7 @@ BuildRequires:	autoconf >= 2.59, automake >= 1.9, gcc, libtool, docbook-utils, h
 BuildRequires:  xmlto
 BuildRequires:  kernel-kerrighed-source-krgversion = %{krgversion}-%{kernelpkgrelease}
 
-%if %rhdis > 0
-BuildRequires: redhat-lsb
-%elseif %mdvdis > 0
 BuildRequires: lsb-core, docbook-dtd42-xml
-%endif
 
 ExclusiveArch:	%{ix86}
 Requires:	kerrighed-kmodule = %{krgversion}-%{release}, kerrighed-utils = %{krgversion}, %{libname} = %{krgversion}
@@ -50,11 +41,7 @@ tools and libs. The Kerrighed system is a Linux-based SSI.
 
 %package kernel
 Summary: The kernel module for Kerrighed kernel %{kernelkrgversion}
-%if %mdvdis > 0
 Group:		System/Cluster
-%else
-Group: System Environment/Kernel
-%endif
 Requires: kernel-kerrighed-krgversion = %{krgversion}-%{kernelpkgrelease}, kerrighed-utils = %{krgversion}
 Provides: kerrighed-kmodule = %{krgversion}
 
@@ -64,11 +51,7 @@ Kerrighed cluster work. It works with the %{kernelkrgversion} kernel.
 
 %package utils
 Summary: Tools for Kerrighed cluster
-%if %mdvdis > 0
 Group:		System/Cluster
-%else
-Group: Applications/System
-%endif
 Requires: %{libname} = %{krgversion}-%{release}
 
 %description utils
@@ -77,11 +60,7 @@ cluster, like init scripts. It contains the command krgadm.
 
 %package -n %{libname}
 Summary: The Kerrighed library
-%if %mdvdis > 0
 Group:		System/Cluster
-%else
-Group: System Environment/Libraries
-%endif
 Requires: kerrighed-kmodule = %{krgversion}-%{release}
 
 %description -n %{libname}
@@ -90,11 +69,7 @@ features of the Kerrighed OS.
 
 %package -n %{libname}-devel
 Summary: The Kerrighed library - development files
-%if %mdvdis > 0
 Group:		System/Cluster
-%else
-Group: Development/Libraries
-%endif
 Provides: kerrighed-devel = %{krgversion}-%{release}, libkerrighed-devel = %{krgversion}-%{release}
 Requires: %{libname} = %{krgversion}-%{release}
 
