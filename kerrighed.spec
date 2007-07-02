@@ -79,7 +79,7 @@ libkrgthread) development files and static libraries.
 %prep
 %setup -q
 %{__tar} --exclude=iforce-protocol.txt -C /usr/src -cf - kernel-kerrighed-%{kernelkrgversion} | %{__tar} -xf -
-%{__sed} -i 's/EXTRAVERSION = .*/EXTRAVERSION = %{extraversion}/' linux-%{kernelkrgversion}/Makefile
+%{__sed} -i 's/EXTRAVERSION = .*/EXTRAVERSION = %{extraversion}/' kernel-kerrighed-%{kernelkrgversion}/Makefile
 
 %build
 %configure \
@@ -100,7 +100,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
         $RPM_BUILD_ROOT/lib/modules/%{kernelkrgversion}/extra/kerrighed.ko
 
 %clean
-#rm -rf $RPM_BUILD_ROOT
+%{__rm} -rf $RPM_BUILD_ROOT
 #rm -rf %{_builddir}/linux-%{linuxversion} %{_builddir}/%{name}-%{version}
 
 %post kernel
