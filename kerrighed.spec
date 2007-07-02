@@ -9,7 +9,6 @@ Summary: The Kerrighed system (a Linux-based SSI)
 %define kernelpkgrelease %mkrel %kernelrelease
 %define extraversion %{linuxsubversion}-krg%{krgversion}-%{kernelrelease}%{distsuffix}
 %define kernelkrgversion %{linuxversion}%{extraversion}
-%define kernelsrcdir %{_usrsrc}/kernel-kerrighed-%{kernelkrgversion}
 %define release %mkrel 1
 %define libname %mklibname %name
 
@@ -79,12 +78,12 @@ libkrgthread) development files and static libraries.
 
 %prep
 %setup -q
-%{__cp} -a %{kernelsrcdir} linux-%{kernelkrgversion}
+%{__tar} --exclude=iforce-protocol.txt -C /usr/src -cf - kernel-kerrighed-%{kernelkrgversion} | %{__tar} -xf -
 %{__sed} -i 's/EXTRAVERSION = .*/EXTRAVERSION = %{extraversion}/' linux-%{kernelkrgversion}/Makefile
 
 %build
 %configure \
-	--with-kernel=`pwd`/linux-%{kernelkrgversion} \
+	--with-kernel=`pwd`/kernel-kerrighed-%{kernelkrgversion} \
 	--enable-libkerrighed \
 	--enable-tools \
 	--enable-module \
