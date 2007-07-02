@@ -28,7 +28,7 @@ BuildRequires:	autoconf >= 2.59, automake >= 1.9, gcc, libtool, docbook-utils, h
 BuildRequires:  xmlto
 BuildRequires:  kernel-kerrighed-source-krgversion = %{krgversion}-%{kernelpkgrelease}
 
-BuildRequires: lsb-core, docbook-dtd42-xml
+BuildRequires: lsb-core, docbook-dtd412-xml
 
 ExclusiveArch:	%{ix86}
 Requires:	kerrighed-kmodule = %{krgversion}-%{release}, kerrighed-utils = %{krgversion}, %{libname} = %{krgversion}
