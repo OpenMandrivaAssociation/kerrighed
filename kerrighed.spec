@@ -146,9 +146,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_mandir}/man1/migrate.1*
 %{_mandir}/man2/migrate.2*
 %{_mandir}/man2/migrate_self.2*
-%{_mandir}/man1/checkpoint.1.bz2
-%{_mandir}/man1/restart.1.bz2
-%{_mandir}/man7/kerrighed_capabilities.7.bz2
+%{_mandir}/man1/checkpoint.*
+%{_mandir}/man1/restart.*
+%{_mandir}/man7/kerrighed_capabilities.*
 #%config %{_sysconfdir}/default/kerrighed
 %{_sysconfdir}/init.d/kerrighed
 
