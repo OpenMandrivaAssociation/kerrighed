@@ -2,10 +2,10 @@
 Summary: The Kerrighed system (a Linux-based SSI)
 
 %define name kerrighed
-%define krgversion 2.1.0
+%define krgversion 2.1.1
 %define linuxversion 2.6.20
-%define linuxsubversion .13
-%define	kernelrelease 2
+%define linuxsubversion .16
+%define	kernelrelease 1
 %define kernelpkgrelease %mkrel %kernelrelease
 %define extraversion %{linuxsubversion}-krg%{krgversion}-%{kernelrelease}%{distsuffix}
 %define kernelkrgversion %{linuxversion}%{extraversion}
@@ -96,8 +96,6 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{__mkdir} -p $RPM_BUILD_ROOT/etc/init.d
 %{__cp} -p tools/scripts/init.d/redhat $RPM_BUILD_ROOT%{_sysconfdir}/init.d/kerrighed
 %{__mkdir} -p $RPM_BUILD_ROOT/lib/modules/%{kernelkrgversion}/extra
-%{__mv} $RPM_BUILD_ROOT/lib/modules/%{kernelkrgversion}/build/kerrighed.ko \
-        $RPM_BUILD_ROOT/lib/modules/%{kernelkrgversion}/extra/kerrighed.ko
 
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
