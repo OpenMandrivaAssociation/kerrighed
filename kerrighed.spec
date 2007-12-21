@@ -22,6 +22,7 @@ Group:		System/Cluster
 License:	GPL
 URL:		http://kerrighed.org
 
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:	autoconf >= 2.59, automake >= 1.9, gcc, libtool, docbook-utils, hevea
 BuildRequires:  xmlto
