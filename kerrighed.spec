@@ -2,12 +2,11 @@
 Summary: The Kerrighed system (a Linux-based SSI)
 
 %define name kerrighed
-%define krgversion 2.1.1
+%define krgversion 2.2.0
 %define linuxversion 2.6.20
-%define linuxsubversion .16
 %define	kernelrelease 1
 %define kernelpkgrelease %mkrel %kernelrelease
-%define extraversion %{linuxsubversion}-krg%{krgversion}-%{kernelrelease}%{distsuffix}
+%define extraversion -krg%{krgversion}-%{kernelrelease}%{distsuffix}
 %define kernelkrgversion %{linuxversion}%{extraversion}
 %define release %mkrel 1
 %define libname %mklibname %name
@@ -87,6 +86,7 @@ libkrgthread) development files and static libraries.
 	--enable-libkerrighed \
 	--enable-tools \
 	--enable-module \
+	--disable-service \
 	--disable-tests
 %make
 
@@ -178,6 +178,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_includedir}/kerrighed/checkpoint.h
 %{_includedir}/kerrighed/kerrighed_tools.h
 %{_includedir}/kerrighed/hotplug.h
+%{_includedir}/kerrighed/krgnodemask.h
 #%{_includedir}/kerrighed/krgthread.h
 #%{_includedir}/kerrighed/krg_dsm.h
 %{_libdir}/pkgconfig/kerrighed.pc
