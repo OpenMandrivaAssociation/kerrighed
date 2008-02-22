@@ -2,7 +2,7 @@
 Summary: The Kerrighed system (a Linux-based SSI)
 
 %define name kerrighed
-%define krgversion 2.2.0
+%define krgversion 2.2.1
 %define linuxversion 2.6.20
 %define	kernelrelease 1
 %define kernelpkgrelease %mkrel %kernelrelease
