@@ -107,11 +107,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %postun kernel
 /sbin/depmod %{kernelkrgversion}
 
-%post -n %libname
-/sbin/ldconfig
+%post -n %libname -p /sbin/ldconfig
 
-%postun -n %libname
-/sbin/ldconfig
+%postun -n %libname -p /sbin/ldconfig
 
 %post utils
 /sbin/chkconfig --add kerrighed
