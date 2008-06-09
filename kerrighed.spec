@@ -107,9 +107,13 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %postun kernel
 /sbin/depmod %{kernelkrgversion}
 
+%if %mdkversion < 200900
 %post -n %libname -p /sbin/ldconfig
+%endif
 
+%if %mdkversion < 200900
 %postun -n %libname -p /sbin/ldconfig
+%endif
 
 %post utils
 /sbin/chkconfig --add kerrighed
