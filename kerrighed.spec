@@ -8,7 +8,7 @@ Summary: The Kerrighed system (a Linux-based SSI)
 %define kernelpkgrelease %mkrel %kernelrelease
 %define extraversion -krg%{krgversion}-%{kernelrelease}%{distsuffix}
 %define kernelkrgversion %{linuxversion}%{extraversion}
-%define release %mkrel 1
+%define release %mkrel 3
 %define libname %mklibname %name
 
 %define all_x86 i686
