@@ -2,16 +2,16 @@
 Summary: The Kerrighed system (a Linux-based SSI)
 
 %define name kerrighed
-%define krgversion 2.2.1
+%define krgversion 2.3.0
 %define linuxversion 2.6.20
 %define	kernelrelease 1
 %define kernelpkgrelease %mkrel %kernelrelease
 %define extraversion -krg%{krgversion}-%{kernelrelease}%{distsuffix}
 %define kernelkrgversion %{linuxversion}%{extraversion}
-%define release %mkrel 3
+%define release %mkrel 1
 %define libname %mklibname %name
 
-%define all_x86 i686
+%define all_x86 i686 x86_64
 
 Name:		%name
 Version:	%{krgversion}
@@ -29,7 +29,7 @@ BuildRequires:  kernel-kerrighed-source-krgversion = %{krgversion}-%{kernelpkgre
 
 BuildRequires: lsb-core, docbook-dtd412-xml, rsync
 
-ExclusiveArch:	%{ix86}
+ExclusiveArch:	%{ix86} x86_64
 Requires:	kerrighed-kmodule = %{krgversion}-%{release}, kerrighed-utils = %{krgversion}, %{libname} = %{krgversion}
 Source0:	kerrighed-%{krgversion}.tar.gz
 
