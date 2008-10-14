@@ -126,7 +126,7 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 %files kernel
 %defattr(-,root,root)
-%doc README ChangeLog modules/CHANGES modules/COPYRIGHT
+%doc README ChangeLog modules/COPYRIGHT
 /lib/modules/%{kernelkrgversion}/extra/kerrighed.ko
 
 %files utils
