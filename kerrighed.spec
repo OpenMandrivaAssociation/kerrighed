@@ -78,7 +78,6 @@ libkrgthread) development files and static libraries.
 %prep
 %setup -q
 %{__tar} --exclude=iforce-protocol.txt -C /usr/src -cf - kernel-kerrighed-%{kernelkrgversion} | %{__tar} -xf -
-%{__sed} -i 's/EXTRAVERSION = .*/EXTRAVERSION = %{extraversion}/' kernel-kerrighed-%{kernelkrgversion}/Makefile
 
 %build
 %configure \
