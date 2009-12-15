@@ -2,13 +2,13 @@
 Summary: The Kerrighed system (a Linux-based SSI)
 
 %define name kerrighed
-%define krgversion 2.3.0
+%define krgversion 2.4.3
 %define linuxversion 2.6.20.21
 %define	kernelrelease 1
 %define kernelpkgrelease %mkrel %kernelrelease
 %define extraversion -krg%{krgversion}-%{kernelrelease}%{distsuffix}
 %define kernelkrgversion %{linuxversion}%{extraversion}
-%define release %mkrel 2
+%define release %mkrel 1
 %define libname %mklibname %name
 
 %define all_x86 i686 x86_64
@@ -25,13 +25,17 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 BuildRequires:	autoconf >= 2.59, automake >= 1.9, gcc, libtool, docbook-utils, hevea
 BuildRequires:  xmlto
+#kernel-kerrighed-source-krgversion = 2.4.2-2xos2.0
 BuildRequires:  kernel-kerrighed-source-krgversion = %{krgversion}-%{kernelpkgrelease}
 
 BuildRequires: lsb-core, docbook-dtd412-xml, rsync
 
 ExclusiveArch:	%{ix86} x86_64
 Requires:	kerrighed-kmodule = %{krgversion}-%{release}, kerrighed-utils = %{krgversion}, %{libname} = %{krgversion}
-Source0:	kerrighed-%{krgversion}.tar.gz
+Source0:	kerrighed-%{krgversion}.tar.bz2
+Source10:	compile.h
+Source111:	redhat
+Patch1:		krg_2.4.4-libkerrighed_libhotplug.c.patch
 
 %description
 The Kerrighed meta-package. It depends on the kernel, the module,
@@ -65,6 +69,14 @@ Requires: kerrighed-kmodule = %{krgversion}-%{release}
 This package provides the kerrighed library to use some advanced
 features of the Kerrighed OS.
 
+%package python
+Summary: The Kerrighed python library
+Group:          System/Cluster
+Requires: kerrighed-kmodule = %{krgversion}-%{release} python
+
+%description python
+This package provides the kerrighed python files
+
 %package -n %{libname}-devel
 Summary: The Kerrighed library - development files
 Group:		System/Cluster
@@ -72,28 +84,40 @@ Provides: kerrighed-devel = %{krgversion}-%{release}, libkerrighed-devel = %{krg
 Requires: %{libname} = %{krgversion}-%{release}
 
 %description -n %{libname}-devel
-This package provides the kerrighed libraries (libkerrighed and 
-libkrgthread) development files and static libraries.
+This package provides the kerrighed libraries (libkerrighed
+development files and static libraries.
 
 %prep
 %setup -q
+%patch1 -p0
 %{__tar} --exclude=iforce-protocol.txt -C /usr/src -cf - kernel-kerrighed-%{kernelkrgversion} | %{__tar} -xf -
 
 %build
+rm -rf kernel
+ln -sf kernel-kerrighed-%{kernelkrgversion} _kernel 
+ln -sf kernel-kerrighed-%{kernelkrgversion} kernel
+# fix missing dir
+mkdir tools/tools
+# kernel always has been built
+perl -pi -e "s/false//" modules/Makefile.am
+./autogen.sh
 %configure \
 	--with-kernel=`pwd`/kernel-kerrighed-%{kernelkrgversion} \
 	--enable-libkerrighed \
-	--enable-tools \
 	--enable-module \
+	--enable-tools \
 	--disable-service \
-	--disable-tests
+	--disable-tests \
+	--disable-kernel
+cp %{SOURCE10} kernel/include/linux/compile.h
 %make
+
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 %{__mkdir} -p $RPM_BUILD_ROOT/etc/init.d
-%{__cp} -p tools/scripts/init.d/redhat $RPM_BUILD_ROOT%{_sysconfdir}/init.d/kerrighed
+%{__cp} -p %{SOURCE111} $RPM_BUILD_ROOT%{_sysconfdir}/init.d/kerrighed
 %{__mkdir} -p $RPM_BUILD_ROOT/lib/modules/%{kernelkrgversion}/extra
 
 %clean
@@ -128,15 +152,24 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %defattr(-,root,root)
 %doc README ChangeLog modules/COPYRIGHT
 /lib/modules/%{kernelkrgversion}/extra/kerrighed.ko
+/lib/modules/%{kernelkrgversion}/extra/freq_limit_filter.ko
+/lib/modules/%{kernelkrgversion}/extra/migration_probe.ko
+/lib/modules/%{kernelkrgversion}/extra/mosix_load_balancer.ko
+/lib/modules/%{kernelkrgversion}/extra/mosix_probe.ko
+/lib/modules/%{kernelkrgversion}/extra/remote_cache_filter.ko
+/lib/modules/%{kernelkrgversion}/extra/round_robin_balancer.ko
+/lib/modules/%{kernelkrgversion}/extra/threshold_filter.ko
+
 
 %files utils
 %defattr(-,root,root)
-%doc tools/ChangeLog tools/INSTALL tools/README
 %{_bindir}/migrate
 %{_bindir}/krgcapset
 %{_bindir}/krgadm
 %{_bindir}/checkpoint
 %{_bindir}/restart
+%{_bindir}/krg_legacy_scheduler
+%{_bindir}/krgcr-run
 %{_mandir}/man1/krgadm.1*
 %{_mandir}/man7/kerrighed.7*
 %{_mandir}/man5/kerrighed_nodes.5*
@@ -148,44 +181,43 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %{_mandir}/man1/checkpoint.*
 %{_mandir}/man1/restart.*
 %{_mandir}/man7/kerrighed_capabilities.*
+%{_mandir}/man1/krgcr-run.1.lzma
 #%config %{_sysconfdir}/default/kerrighed
 %{_sysconfdir}/init.d/kerrighed
 
 
 %files -n %libname
 %defattr(-,root,root)
-%doc libs/ChangeLog libs/INSTALL libs/README
-%{_libdir}/libkerrighed.so.1.0.0
-%{_libdir}/libkerrighed.so.1
+%{_libdir}/libkerrighed.so.2.0.0
+%{_libdir}/libkerrighed.so.2
+%{_libdir}/libkrgcb.so.1
+%{_libdir}/libkrgcb.so.1.0.0
 
-
-#%files libkrgthread
-#%defattr(-,root,root)
-#%doc libs/AUTHORS libs/ChangeLog libs/COPYING libs/INSTALL libs/README
-#%{_libdir}/libkrgthread.so.1.0.0
-#%{_libdir}/libkrgthread.so.1
-#%{_libdir}/libkrgthread.so
+%files python
+%{py_puresitedir}/kerrighed.py
+%{py_puresitedir}/kerrighed.pyc
+%{py_puresitedir}/kerrighed.pyo
 
 %files -n %{libname}-devel
 %defattr(-,root,root)
-%doc libs/ChangeLog libs/INSTALL libs/README
 %{_includedir}/kerrighed/kerrighed.h
 %{_includedir}/kerrighed/capability.h
 %{_includedir}/kerrighed/capabilities.h
 %{_includedir}/kerrighed/proc.h
-%{_includedir}/kerrighed/comm.h
 %{_includedir}/kerrighed/types.h
-%{_includedir}/kerrighed/process_group_types.h
 %{_includedir}/kerrighed/checkpoint.h
 %{_includedir}/kerrighed/kerrighed_tools.h
 %{_includedir}/kerrighed/hotplug.h
 %{_includedir}/kerrighed/krgnodemask.h
-#%{_includedir}/kerrighed/krgthread.h
-#%{_includedir}/kerrighed/krg_dsm.h
+%{_includedir}/kerrighed/libkrgcb.h
 %{_libdir}/pkgconfig/kerrighed.pc
-#%{_libdir}/pkgconfig/krgthread.pc
 %{_libdir}/libkerrighed.la
 %{_libdir}/libkerrighed.a
-#%{_libdir}/libkrgthread.la
-#%{_libdir}/libkrgthread.a
 %{_libdir}/libkerrighed.so
+%{_libdir}/pkgconfig/krgcb.pc
+%{_libdir}/libkrgcb.a
+%{_libdir}/libkrgcb.la
+%{_libdir}/libkrgcb.so
+
+
+%changelog
