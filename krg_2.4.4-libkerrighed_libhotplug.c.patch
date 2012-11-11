@@ -1,0 +1,10 @@
+--- libs/libkerrighed/libhotplug.c	2009-12-08 17:05:48.000000000 +0100
++++ libs/libkerrighed/libhotplug.c.patched	2009-12-08 17:06:12.000000000 +0100
+@@ -490,6 +490,7 @@
+ {
+ 	struct krg_nodes* status;
+ 	int r;
++	r = 0;
+ 
+ 	status = krg_nodes_status();
+ 	if(!status){
