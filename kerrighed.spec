@@ -19,7 +19,7 @@ Release:	%release
 
 Group:		System/Cluster
 License:	GPL
-URL:		http://kerrighed.org
+URL:		https://kerrighed.org
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
