@@ -23,6 +23,8 @@ URL:		https://kerrighed.org
 
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
 BuildRequires:	autoconf >= 2.59, automake >= 1.9, gcc, libtool, docbook-utils, hevea
 BuildRequires:  xmlto
 #kernel-kerrighed-source-krgversion = 2.4.2-2xos2.0
