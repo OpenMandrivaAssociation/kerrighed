@@ -5,10 +5,10 @@ Summary: The Kerrighed system (a Linux-based SSI)
 %define krgversion 2.4.3
 %define linuxversion 2.6.20.21
 %define	kernelrelease 1
-%define kernelpkgrelease %mkrel %kernelrelease
+%define kernelpkgrelease %kernelrelease.1
 %define extraversion -krg%{krgversion}-%{kernelrelease}%{distsuffix}
 %define kernelkrgversion %{linuxversion}%{extraversion}
-%define release %mkrel 3
+%define release 4
 %define libname %mklibname %name
 
 %define all_x86 i686 x86_64
